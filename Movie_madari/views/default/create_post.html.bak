@@ -1,0 +1,4 @@
+{{extend 'layout.html'}}
+<h2>It's very easy to criticize someone's hardwork !</h2>
+<h3>{{=category.name.title()}}</h3>
+{{=form}}

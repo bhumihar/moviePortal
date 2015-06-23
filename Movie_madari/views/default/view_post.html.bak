@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+<div class="well" >
+<h2>{{=A(post.title,_href=post.url) if post.url else post.title}}</h2>
+    
+    
+<strong>{{=MARKMIN(post.reviews)}}</strong>
+
+</div>
+<i>Created by</i> {{=post.created_by.first_name}} <i>on</i> {{=post.created_on}}
+<!--{{for comment in comments:}}
+<div class="well">
+    "{{=comment.body}}" by {{=author(comment.created_by)}}
+</div>-->
+
+{{pass}}

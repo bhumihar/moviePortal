@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+<style>
+.well {
+    width : 900px;
+}
+body {
+    background-image: url("{{=URL('static','images/star1.jpg')}}");
+    background-repeat: repeat-1;
+}
+</style>
+{{for category in rows:}}
+<div class="well">
+    {{=A(category.name.title(),_class="btn btn-middle " ,_style="width:15%" , _href=URL('list_posts_by_votes',args=category.name))}}
+</div>
+{{pass}}

@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+
+db.define_table('category',
+                 Field('name',requires=(IS_SLUG(),IS_LOWER(),IS_NOT_IN_DB(db,'category.name'))))
+
+db.define_table('post',
+                Field('Movie_name',requires=IS_NOT_EMPTY()),
+                Field('category','reference category',readable=False,writable=False),
+                Field('title','string',requires=IS_NOT_EMPTY()),
+                Field('url',requires=IS_EMPTY_OR(IS_URL())),
+                Field('reviews','text'),
+                Field('image','upload'),
+                Field('rating', 'integer',requires=IS_IN_SET(range(1,6))),
+                Field('votes','integer',default=0,readable=False,writable=False),
+                auth.signature)
+
+db.define_table('vote',
+                Field('post','reference post'),
+                Field('score','integer',default=+1),
+                auth.signature)
+
+db.define_table('comm',
+                Field('post','reference post'),
+                Field('parent_comm','reference comm'),
+               # Field('rating', 'integer',requires=IS_IN_SET(range(1,6))),
+                #Field('votes','integer'),
+                Field('body','text'),
+                auth.signature)
+
+db.define_table('comm_vote',
+                Field('comm','reference comm'),
+                Field('score','integer',default=+1),
+                auth.signature)
+
+import datetime; now=datetime.date.today()
+
+#db=DAL("sqlite://db.db")
+
+db.define_table('videos',
+	Field('movie_name'),
+	Field('description',length=256),
+	Field('samay','date',default=request.now),
+	Field('uploaded_video','upload'),
+    Field('url',requires=IS_EMPTY_OR(IS_URL())),
+	#Field('converted_video','upload',default=''),
+	Field('converted_image','upload'),
+    Field('manage_video','blob'))
+	#Field('converted','boolean',default=False),
+	#Field('conversion_error','boolean',default=False))
+
+db.videos.movie_name.requires=[IS_NOT_EMPTY()]
+db.videos.description.requries=[IS_NOT_EMPTY()]
+db.videos.samay.requires=[IS_DATE()]
+
+def author(id):
+    if id is None:
+        return "unknown"
+    else:
+        user = db.auth_user(id)
+        return '%(first_name)s %(last_name)s' % user
